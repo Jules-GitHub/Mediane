@@ -14,12 +14,6 @@ let divise5 liste =
   in creeListes liste 0 []
 ;;
 
-(* Question 3
-Dans chaque sous-liste, la médiane est supérieur ou égale (resp inférieure ou égale) à 3 valeurs,
-c'est-à-dire 60% des valeurs de la liste.
-Quand on prend la médiane des médiane, elle est inférieure ou égale à la moitié des médianes et donc à au moins 
-50%*60% = 30% des valeurs totales *)
-
 let partition liste pivot = List.partition (fun x -> x <= pivot) liste;;
 
 let rec k_plus_petit liste k = match List.length liste with
@@ -42,12 +36,6 @@ let rec k_plus_petit liste k = match List.length liste with
   )
 ;;
 
-
-let l = [2;9;13;5;1;12;15;17;18;4;3;7;8;10;20;19;11;6;14;16];;
-let l2 = [2;4;2;6;7;4];;
-
-k_plus_petit l2 4;;
-
 let rec tri_rapide liste = match List.length liste with
 | 0 -> []
 | 1 -> liste
@@ -59,8 +47,7 @@ let rec tri_rapide liste = match List.length liste with
   )
 ;;
 
+let l = [2;9;13;5;1;12;15;17;18;4;3;7;8;10;20;19;11;6;14;16];;
+let l2 = [2;4;2;6;7;4];;
+
 tri_rapide l;;
-
-let a = (List.init 150 (fun i -> Random.int 150));;
-
-tri_rapide a;;
