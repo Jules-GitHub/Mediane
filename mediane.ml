@@ -20,28 +20,47 @@ c'est-à-dire 60% des valeurs de la liste.
 Quand on prend la médiane des médiane, elle est inférieure ou égale à la moitié des médianes et donc à au moins 
 50%*60% = 30% des valeurs totales *)
 
-let partition liste pivot = List.partition (fun x -> x > pivot) liste;;
-
-let liste_medianes liste = List.map (fun l -> mediane5 l) (divise5 liste);;
-
-let rec mediane liste = match List.length liste with
-| n when n <= 5 -> mediane5 liste
-| _ -> mediane (liste_medianes liste);;
+let partition liste pivot = List.partition (fun x -> x <= pivot) liste;;
 
 let rec k_plus_petit liste k = match List.length liste with
 | 0 -> failwith "Taille de liste incorrecte"
 | 1 -> List.hd liste
-| _ -> let m = mediane liste in
-  if (List.for_all (fun x -> x = m) liste) then m
+| n -> 
+  let pivot = 
+    if (n <= 5) then (
+      mediane5 liste
+    ) else (
+      k_plus_petit (List.map (fun l -> mediane5 l) (divise5 liste)) (n/(2*5))
+    )
+  in
+  if (List.for_all (fun x -> x = pivot) liste) then pivot
   else (
-    let l1, l2 = partition liste m in
-    let n2 = List.length l2 in
-    if (k <= n2) then (k_plus_petit l2 k)
-    else (k_plus_petit l1 (k-n2))
+    let l1, l2 = partition liste pivot in
+    let n1 = List.length l1 in
+    if (k <= n1) then (k_plus_petit l1 k)
+    else (k_plus_petit l2 (k-n1))
   )
 ;;
 
-let vraie_med liste = k_plus_petit liste ((List.length liste)/2);;
 
 let l = [2;9;13;5;1;12;15;17;18;4;3;7;8;10;20;19;11;6;14;16];;
 let l2 = [2;4;2;6;7;4];;
+
+k_plus_petit l2 4;;
+
+let rec tri_rapide liste = match List.length liste with
+| 0 -> []
+| 1 -> liste
+| n -> let pivot = k_plus_petit liste (n/2) in
+  if (List.for_all (fun x -> x = pivot) liste) then liste
+  else (
+    let l1, l2 = partition liste pivot in
+    (tri_rapide l1) @ (tri_rapide l2)
+  )
+;;
+
+tri_rapide l;;
+
+let a = (List.init 150 (fun i -> Random.int 150));;
+
+tri_rapide a;;
